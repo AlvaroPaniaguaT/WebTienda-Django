@@ -1,0 +1,53 @@
+{% extends 'plantilla.html' %}
+{% load staticfiles %}
+{% block content %}
+<div class='cart'>
+	<table class='cart-table' id='myTable'>
+		<thead>
+			<tr>
+				<th>Producto</th>
+				<th>Precio por unidad</th>
+				<th>Cantidad</th>
+				<th>Subtotal</th>
+				<th></th>
+			</tr>
+		</thead>
+		<tfoot>
+    		<tr>
+      			<td colspan="5"> Total: {{total_price}}€</td>
+    		</tr>
+  		</tfoot>
+  		<tbody>
+	{% for prod_dicc in prod_array %}
+		<tr>
+			<td> 
+				<img src= "{% static 'img/' %}{{prod_dicc.product.name}}.jpg" class='p_image'>
+    			<p>{{prod_dicc.product.name|upper}}</p>
+    		</td>
+			<td> {{ prod_dicc.product.price }}€ </td>
+			<td> {{ prod_dicc.quantity }} </td>
+			<td id='{{prod_dicc.product.name}}'> </td>
+			<td>
+				<button onclick="eraseProd('{{prod_dicc.product.name|slugify}}');">
+          			<img src="{% static 'img/trash.png' %}" style="width: 20px; height: 20px;" />
+        		</button>
+    		</td>
+		</tr>
+		<script>
+			var subtotal = {{prod_dicc.product.price}} * {{prod_dicc.quantity}};
+			document.getElementById("{{prod_dicc.product.name}}").innerHTML = subtotal + '€';
+			total += subtotal;
+			document.getElementById("final-price").innerHTML = total;
+		</script>
+	{% endfor %}
+		</tbody>
+	</table>
+	<div class='form-div'>
+	<form id='payment-form' action='/confirm/cart' method='post'>
+		{% csrf_token %}
+		{{ my_form.as_p }}
+		<button class='add-product' type='submit' form='payment-form'>Confirmar compra</button>
+	</form>
+	</div>
+</div>
+{% endblock %}

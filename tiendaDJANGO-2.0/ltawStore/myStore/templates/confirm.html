@@ -1,0 +1,68 @@
+{% extends 'plantilla.html' %}
+{% load staticfiles %}
+{% block content %}
+<div class='table-container'>
+	<br>
+	<table>
+		<tr>
+			<th colspan="2"> DATOS FINALES DE COMPRA </th>
+		</tr>
+		<tr>
+			<td> FECHA </td>
+			<td> {{ date_now }} </td>
+		</tr>
+		<tr>
+			<td> PRODUCTO </td>
+			<td> {{ product.name }} </td>
+		</tr>
+		<tr>
+			<td> CANTIDAD </td>
+			<td> {{ data.cleaned_data.quantity }} </td>
+		</tr>
+		<tr>
+			<td> METODO DE PAGO </td>
+			{% if data.cleaned_data.payMeth == '1' %}
+				<td> VISA </td>
+			{% elif data.cleaned_data.payMeth == '2' %}
+				<td> Maestro </td>
+			{% elif data.cleaned_data.payMeth == '3' %}
+				<td> MasterCard </td>
+			{% elif data.cleaned_data.payMeth == '4' %}
+				<td> Efectivo </td>
+			{% endif %}
+		</tr>
+		<tr>
+			<td> PRECIO TOTAL DEL PEDIDO </td>
+			<td id='f-price'></td>
+		</tr>
+		<tr>
+			<td> DESTINATARIO </td>
+			<td> {{ data.cleaned_data.full_name }} </td>
+		</tr>
+		<tr>
+			<td> PAIS </td>
+			<td> {{ data.cleaned_data.country }} </td>
+		</tr>
+		<tr>
+			<td> CIUDAD </td>
+			<td> {{ data.cleaned_data.city }} </td>
+		</tr>
+		<tr>
+			<td> CALLE </td>
+			<td> {{ data.cleaned_data.address }} </td>
+		</tr>
+	</table>
+
+	<form action='/aux/{{ order_id }}/' id='confirm' method='post'>
+		{% csrf_token %}
+		<div id='button-cont'>
+			<button class='add-product' form='confirm' >Confirmar</button>
+		</div>
+	</form>
+	<br>
+</div>
+	<script>
+		precioFinal = {{ data.cleaned_data.quantity }} * {{ product.price }};
+		document.getElementById('f-price').innerHTML = precioFinal + ' €'
+	</script>
+{% endblock %}

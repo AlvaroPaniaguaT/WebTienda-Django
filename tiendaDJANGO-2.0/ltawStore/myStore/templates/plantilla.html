@@ -1,0 +1,83 @@
+{% load staticfiles %}
+<!DOCTYPE HTML>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>PaniShop</title>
+    <link rel="stylesheet" type="text/css" href="{% static 'css/template.css'%}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  </head>
+  <script src="{% static 'js/ajax-script.js' %}"></script>
+  <body>
+    <div class="header">
+      <div class='img-logo'>
+        <a href="/">
+          <img src="{% static 'img/Logo-Tienda.png' %}" id="logo"></img>
+        </a>
+      </div>
+      <div class='up-header'>
+        <div class='cart-container'>
+          <div class='cart-icon'>
+            <a href='/cart/see/'>
+              <img src="{% static 'img/cart.png' %}" id='cart-img'/>
+            </a>
+          </div>
+          <div class='cart-quantity'>
+            <p>{{ item_num }}</p>
+          </div>
+        </div>
+        <div class="login-container">
+          {% if request.user.is_authenticated %}
+            <p>Bienvenido {{ request.user }} </p>
+          {% else %}
+            <a href='/login'>
+              <p>Inicia Sesion</p>
+            </a>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+    <div class="menu">
+      <ul>
+        <li class="dropdown"><a class="dropbtn" href='/bikes/0'>Bicicletas</a>
+          <div class="dropdown-content">
+              <a href="/bikes/1">Montaña</a>
+              <a href="/bikes/2">Descenso</a>
+              <a href="/bikes/3">Carretera</a>
+          </div>
+        </li>
+        <li class="dropdown"><a class="dropbtn" href='/CD/0'>CDs</a>
+          <div class="dropdown-content">
+              <a href="/CD/1">Rock</a>
+              <a href="/CD/2">Hip-Hop</a>
+              <a href="/CD/3">Pop</a>
+              <a href="/CD/4">Heavy Metal</a>
+              <a href="/CD/5">House</a>
+          </div>
+        </li>
+        <li class="dropdown"><a class="dropbtn" href='/book/0'>Libros</a>
+          <div class="dropdown-content">
+              <a href="/book/1">Poesía</a>
+              <a href="/book/2">Misterio</a>
+              <a href="/book/3">Ficción</a>
+          </div>
+        </li>
+      </ul>
+      <div class="search-container">
+        <form>
+            <input id='search' type="text" placeholder="Search.." name="search" onkeyup="showRelated();">
+            <button type="submit"><i class="fa fa-search" ></i></button>
+            <div>
+              <ul id='searchBox'>
+              </ul>
+            </div>
+        </form>
+      </div>
+    </div>
+    <div class="Contenido-principal">
+      {% block content %}
+      {% endblock %}
+    </div>
+    <div class="footer"></div>
+  </body>
+</html>

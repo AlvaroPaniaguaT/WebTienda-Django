@@ -1,0 +1,27 @@
+{% extends 'plantilla.html' %}
+{% load staticfiles %}
+{% block content %}
+	<div class="buy-container">
+		<div class="buy-form-container">
+			<div class='mini-img'><img src= "{% static 'img/' %}{{item.name}}.jpg"></img></div>
+			<div class='descr'>
+				{% if item.p_type == 'bike' %}
+					<p> Articulo a comprar: <em>'{{item_type.brand | upper}} - {{ item.name | upper }}'</em></p>
+				{% else %}
+					<p> Articulo a comprar: <em>'{{item_type.author | upper}} - {{ item.name | upper }}'</em></p>
+				{% endif %}
+
+				<form id='payment-form' action='/{{item.name|slugify}}/' method='post'>
+					{% csrf_token %}
+					{{ payment_form.as_p }}
+				</form>
+			</div>
+		</div>
+		<div class='price-container'>
+			<p> Precio unitario: {{item.price}}€ </p>
+			<p> Envío gratuito </p>
+			<button class='add-product' type='submit' form='payment-form'>Enviar</button>
+			<p> {{ message }} </p>
+		</div>
+	</div>
+{% endblock %}

@@ -1,0 +1,56 @@
+{% extends 'plantilla.html' %}
+{% load staticfiles %}
+{% block content %}
+	<div class='buy-products-container'>
+		<div class='zoom-img'><img src="{% static 'img/' %}{{item.name}}.jpg"/></div>
+		<div class='product-attrs'>
+			<div class='product-name'>
+				{% if item.p_type == 'bike' %}
+					<p>{{item_type.brand|upper}} - {{item.name|upper}}</p>
+				{% else %}
+					<p>{{item_type.author|upper}} - {{item.name|upper}}</p>
+				{% endif %}
+			</div>
+			<div class='product-prop'>
+				<div id='price'>
+					<p>PVP:</p>
+					<p>{{item.price|upper}} €</p>
+				</div>
+				<div class='buy-stock'>
+					<br>
+					{% if item.is_available %}
+    					<p><strong>In Stock</strong></p>
+    				{% else %}
+    					<p>Out of Stock</p>
+    				{% endif %}
+				</div>
+			</div>
+			<form action='/{{item.name|slugify}}' id='directBuy'>
+				<div class='btn-cont'>
+					<button class='add-product' type="submit" form='directBuy'>Comprar</button>
+				</div>
+			</form>
+
+				<input type="number" id='cart_quantity' value='1' min="1" max={{item.stock}}>
+				<button class='add-product' onclick="addCart('{{item.name|slugify}}')" type='submit' form='addCart'>Añadir al carrito </button>
+
+		</div>
+	</div>
+	<div class="product-description">
+		<h1 id='desc-title'>Descripción del producto:</h3>
+		{% if item.p_type == 'book' %}
+			<p> A continuación dejamos el siguiente enlace para conocer más a fondo el producto: </p>
+			<a href='{{item.external_url}}'>{{item.external_url}}</a>
+		{% else %}
+			<div id='item-description'>
+				<div class='embed-video'>
+					<iframe width='480' height='270' src='{{item.external_url}}'></iframe>
+				</div>
+				<div class='description'>
+					<p>{{item.description}}</p>
+				</div>
+			</div>
+		{% endif %}
+	</div>
+
+{% endblock %}

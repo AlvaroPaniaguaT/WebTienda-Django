@@ -1,0 +1,37 @@
+{% extends 'plantilla.html' %}
+{% load staticfiles %}
+{% block content %}
+
+	{% for item in items %}
+    	<div class='products-container'>
+				<a id='links' href='/p-buy/{{item.name|slugify}}'>
+    		<div>
+    			<img src= "{% static 'img/' %}{{item.name}}.jpg" class='p_image'></img>
+    		</div>
+    		<div class='p-descriptions'>
+    			<div class='p_name'>
+    				{% if item.p_type == 'bike' %}
+                        <p>{{item.brand|upper}} - {{item.name|upper}}</p>
+                    {% else %}
+                        <p>{{ item.author|upper }} - {{item.name|upper}}</p>
+                    {% endif %}
+    			</div>
+    			<div class='p_price'>
+    				<p>{{item.price}} €</p>
+    			</div>
+    			<div class='p_type'>
+    				<p>{{item.type}}</p>
+    			</div>
+    			<div class='p_stock'>
+    				{% if item.is_available %}
+    					<p class='stock'><strong>In Stock</strong></p>
+    				{% else %}
+    					<p class='stock'>Out of Stock</p>
+    				{% endif %}
+    			</div>
+    		</div>
+			</a>
+    	</div>
+	{% endfor %}
+
+{% endblock %}
